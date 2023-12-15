@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { UilSearch, UilLocationPinAlt } from '@iconscout/react-unicons'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 const Inputs = ({ setQuery, units, setUnits }) => {
   const [city, setCity] = useState('')
