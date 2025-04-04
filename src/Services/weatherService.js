@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-const API_KEY = '1fa9ff4126d95b8db54f3897a208e91c'
+const API_KEY = 'eef2e4fb73a45a5ea83c7ba0ce45baf1'
 const BASE_URL = 'https://api.openweathermap.org/data/2.5'
 
 // https://api.openweathermap.org/data/2.5/onecall?lat=48.8534&lon=2.3488&exclude=current,minutely,hourly,alerts&appid=1fa9ff4126d95b8db54f3897a208e91c&units=metric
@@ -8,7 +8,18 @@ const BASE_URL = 'https://api.openweathermap.org/data/2.5'
 const getWeatherData = (infoType, searchParams) => {
   const url = new URL(BASE_URL + '/' + infoType)
   url.search = new URLSearchParams({ ...searchParams, appid: API_KEY })
-  return fetch(url).then((res) => res.json())
+
+  return fetch(url)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status} ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((error) => {
+      console.error('Error fetching weather data:', error)
+      throw error
+    })
 }
 
 const formatCurrentWeather = (data) => {
@@ -44,6 +55,10 @@ const formatCurrentWeather = (data) => {
 }
 
 const formatForecastWeather = (data) => {
+  if (!data || !data.daily || !data.hourly) {
+    throw new Error('Invalid forecast data')
+  }
+
   let { timezone, daily, hourly } = data
   daily = daily.slice(1, 6).map((d) => {
     return {
