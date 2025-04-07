@@ -3,7 +3,6 @@ import TopBar from './Components/TopBar'
 import Inputs from './Components/Inputs'
 import TimeAndLocation from './Components/TimeAndLocation'
 import TempAndDetails from './Components/TempAndDetails'
-import Forecast from './Components/Forecast'
 import getFormattedWeatherData from './Services/weatherService'
 import { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
@@ -46,9 +45,7 @@ function App() {
         <>
           <TimeAndLocation weather={weather} />
           <TempAndDetails weather={weather} />
-
-          <Forecast title="hourly forecast" items={weather.hourly} />
-          <Forecast title="daily forecast" items={weather.daily} />
+          {/* Forecast components removed as hourly and daily data are no longer available */}
         </>
       )}
       <ToastContainer autoClose={2000} theme="colored" newestOnTop={true} />
