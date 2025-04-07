@@ -14,16 +14,29 @@ function App() {
   const [weather, setWeather] = useState(null)
 
   useEffect(() => {
+    let isCancelled = false
+
     const fetchWeather = async () => {
       const message = query.q ? query.q : 'current location.'
-
       toast.info('Fetching weather for ' + message)
-      await getFormattedWeatherData({ ...query, units }).then((data) => {
-        toast.success('Weather fetched successfully!')
-        setWeather(data)
-      })
+      try {
+        const data = await getFormattedWeatherData({ ...query, units })
+        if (!isCancelled) {
+          toast.success('Weather fetched successfully!')
+          setWeather(data)
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          toast.error('Failed to fetch weather data. Please try again.')
+        }
+      }
     }
+
     fetchWeather()
+
+    return () => {
+      isCancelled = true
+    }
   }, [query, units])
 
   const formatBackground = () => {
