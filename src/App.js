@@ -7,6 +7,7 @@ import getFormattedWeatherData from './Services/weatherService'
 import { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Forecast from './Components/Forecast'
 
 function App() {
   const [query, setQuery] = useState({ q: 'lodz' })
@@ -58,7 +59,8 @@ function App() {
         <>
           <TimeAndLocation weather={weather} />
           <TempAndDetails weather={weather} />
-          {/* Forecast components removed as hourly and daily data are no longer available */}
+          <Forecast title="Hourly Forecast" items={weather.hourly} />
+          <Forecast title="Daily Forecast" items={weather.daily} />
         </>
       )}
       <ToastContainer autoClose={2000} theme="colored" newestOnTop={true} />
